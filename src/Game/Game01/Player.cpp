@@ -1,55 +1,93 @@
 ﻿#include "Player.h"
-//#include "Bullet.h"
-#include <System/Component/ComponentModel.h>
-#include <System/Component/ComponentObjectController.h>
-#include <System/Component/ComponentCollisionModel.h>
-#include <System/Component/ComponentCollisionCapsule.h>
 namespace Game01 {
+
 bool Player::Init()
 {
     __super::Init();
 
-    //プレイヤーオブジェクト
-    //  auto player = Scene::Object::Create<Object>();
     SetName("Player");
     SetTranslate({0.0f, 5.0f, 0.0f});
-    //float3 scale      = {2.0f, 2.0f, 2.0f};
-    auto model_comp = AddComponent<ComponentModel>("data/Sample/Player/Model.mv1 ");
-    //model_comp->SetScaleAxisXYZ(scale * 0.1);
-    auto cap_comp = AddComponent<ComponentCollisionCapsule>();
-    cap_comp->SetRadius(3.0f);
-    cap_comp->SetHeight(13.0f);
-    cap_comp->UseGravity();
-    model_comp->SetAnimation({
-        {"idle", "data/Sample/Player/Anim/Idle.mv1", 1, 1.0f},
-        {"jump", "data/Sample/Player/Anim/Jump.mv1", 1, 1.0f},
-        {"walk", "data/Sample/Player/Anim/Walk.mv1", 1, 1.0f},
-        // { "walk2",  "data/Sample/Player/Anim/Walk2.mv1", 1, 1.0f},
-        // {"dance1", "data/Sample/Player/Anim/Dance1.mv1", 0, 1.0f},
-        // {"dance2", "data/Sample/Player/Anim/Dance2.mv1", 0, 1.0f},
-        // {"dance3", "data/Sample/Player/Anim/Dance3.mv1", 0, 1.0f},
-        // {"dance4", "data/Sample/Player/Anim/Dance4.mv1", 0, 1.0f},
-        // {"dance5", "data/Sample/Player/Anim/Dance5.mv1", 0, 1.0f}
-    });
-    auto obj_control = AddComponent<ComponentObjectController>();
-    obj_control->SetMoveSpeed(0.5f);
-    obj_control->SetRotateSpeed(20.0f);
-    //model_comp->PlayAnimation("walk",true);
+
+    //Collision
+    AddComponent<ComponentCollisionCapsule>()->SetRadius(4.0f)->SetHeight(6.0f)->UseGravity();
+
+    //!!
+    AddComponent<ComponentModel>("data/model/player.mv1")
+        ->SetScaleAxisXYZ(10.0f)
+        ->SetTranslate({0.0f, 0.0f, 0.0f})
+        ->SetRotationAxisXYZ({0.0f, 0.0f, 0.0f})
+        ->UseShader(false);
+
+    //move
+    AddComponent<ComponentObjectController>()
+        ->SetMoveSpeed(0.3f)
+        ->SetRotateSpeed(20.0f)
+        ->SetKeys(KEY_INPUT_UP, KEY_INPUT_DOWN, KEY_INPUT_LEFT, KEY_INPUT_RIGHT)
+        ->SetCameraKeys(KEY_INPUT_W, KEY_INPUT_S, KEY_INPUT_A, KEY_INPUT_D);
 
     return true;
 }
+
+//! @brief 更新
 void Player::Update()
 {
+    // 毎フレーム動作する
     Super::Update();
-    if(Input::IsKeyDown(KEY_INPUT_SPACE)) {
-        // auto   obj = Scene::Object::Create<Bullet>();
-        // float3 pos = GetTranslate() + float3{0, 5.0f, 0};
-        // obj->SetTranslate(pos);
-        //
-        // auto model = GetComponent<ComponentModel>();
-        // auto dir   = -model->GetWorldMatrix().axisZ();
-        //
-        // obj->SetDirection(dir);
+
+    //!!JUMP
+    if(IsKeyOn(KEY_INPUT_SPACE) && !is_jump_) {
+        is_jump_ = true;
+    }
+
+    if(is_jump_) {
+        jump_power_ = 0.5f;
+
+        AddTranslate({0, jump_power_, 0});
     }
 }
+
+void Player::Draw()
+{
+    Super::Draw();
+
+    //プレイヤー
+    //位置
+    auto pos = cast(GetTranslate());
+    //円の色
+    auto color = GetColor(255, 255, 255);
+    //方向
+    auto rot = cast(GetRotationAxisXYZ());
+    //描画
+    //DrawSphere3D(pos, r_, 20, color, color, TRUE);
+
+    //方向をわかる円
+    auto model = GetComponent<ComponentModel>();
+    if(!model)
+        return;
+    //方向
+    auto dir = model->GetWorldMatrix().axisZ();
+
+    //auto dir = -model->GetTranslate();
+
+    //プレイヤーと離れる距離
+    float offset = 1.0f;
+    //位置
+    float3 cPos = float3(pos.x + dir.x * offset, pos.y + dir.y * offset, pos.z + dir.z * offset);
+    //色
+    int cColor = GetColor(0, 255, 255);
+    //描画
+    DrawSphere3D(cast(cPos), 3.0f, 16, cColor, cColor, TRUE);
+}
+
+void Player::OnHit(const ComponentCollision::HitInfo& hit_info)
+{
+    Super::OnHit(hit_info);
+
+    auto hitName = hit_info.hit_collision_->GetOwner()->GetName();
+    if(hitName == "Ground") {
+        is_jump_    = false;
+        jump_power_ = 0.0f;
+    }
+}
+
 }    // namespace Game01

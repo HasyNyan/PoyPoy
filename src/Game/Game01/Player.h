@@ -1,21 +1,30 @@
 ﻿#pragma once
 #include <System/Scene.h>
+#include <System/Component/ComponentModel.h>
+#include <System/Component/ComponentCollisionModel.h>
+#include <System/Component/ComponentCollisionCapsule.h>
+#include <System/Component/ComponentObjectController.h>
+#include <System/Component/ComponentCollisionSphere.h>
 namespace Game01 {
+
 USING_PTR(Player);
-//! @brief チュートリアルシーン
+
 class Player : public Object
 {
 public:
-    BP_OBJECT_DECL(Player, u8"Game01 の Player");
+    BP_OBJECT_DECL(Player, u8"Game01のPlayer");
 
-    //! @brief 初期化
-    //! @return 初期化済み
     bool Init() override;
 
     //! @brief 更新
     void Update() override;
+    void Draw() override;
+    void OnHit(const ComponentCollision::HitInfo& hit_info) override;
 
 private:
-    // 必要であれば変数をここに追加する
+    float3 rot_;
+    float  jump_power_ = 2.0f;
+    bool   is_jump_    = false;
 };
+
 }    // namespace Game01
