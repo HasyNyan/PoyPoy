@@ -6,11 +6,13 @@ bool Ground::Init()
 {
     __super::Init();
 
-    //グラウンドオブジェクト
-    //auto ground = Scene::Object::Create<Object>();
+    //GROUND
     SetName("Ground");
-    AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/Stage00.mv1");
+
+    AddComponent<ComponentModel>("data/model/ground.mv1")->SetScaleAxisXYZ(1.0f)->SetTranslate(0.0f)->UseShader(false);
+
     AddComponent<ComponentCollisionModel>()->AttachToModel();
+
     return true;
 }
 void Ground::Update()
