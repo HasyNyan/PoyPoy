@@ -15,8 +15,8 @@ bool Game01::Init()
     ////Scene::Object::Create<Enemy>();
     //カメラオブジェクト
     Scene::Object::Create<Camera>();    //CreateObject;
-    ////グラウンドオブジェクト
-    //Scene::Object::Create<Ground>();
+    //グラウンドオブジェクト
+    Scene::Object::Create<Ground>();
     //
     return true;
 }

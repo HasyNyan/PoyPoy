@@ -1,5 +1,4 @@
 ﻿#include "Player.h"
-//#include "Bullet.h"
 #include <System/Component/ComponentModel.h>
 #include <System/Component/ComponentObjectController.h>
 #include <System/Component/ComponentCollisionModel.h>
@@ -42,13 +41,10 @@ void Player::Update()
 {
     Super::Update();
     if(Input::IsKeyDown(KEY_INPUT_SPACE)) {
-        // auto   obj = Scene::Object::Create<Bullet>();
         // float3 pos = GetTranslate() + float3{0, 5.0f, 0};
         // obj->SetTranslate(pos);
-        //
         // auto model = GetComponent<ComponentModel>();
         // auto dir   = -model->GetWorldMatrix().axisZ();
-        //
         // obj->SetDirection(dir);
     }
 }

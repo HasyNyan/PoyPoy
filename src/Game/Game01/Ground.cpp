@@ -7,9 +7,10 @@ bool Ground::Init()
     __super::Init();
 
     //グラウンドオブジェクト
-    //auto ground = Scene::Object::Create<Object>();
+    auto ground = Scene::Object::Create<Object>();
     SetName("Ground");
-    AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/Stage00.mv1");
+
+    AddComponent<ComponentModel>("data/Sample/Stage/ground.mv1");
     AddComponent<ComponentCollisionModel>()->AttachToModel();
     return true;
 }
