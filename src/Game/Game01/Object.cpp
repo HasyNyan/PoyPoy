@@ -1,5 +1,6 @@
 ﻿#include "Object.h";
 #include <System/Component/ComponentModel.h>
+#include <System/Component/ComponentCollisionCapsule.h>
 namespace Game01 {
 bool Stone::Init()
 {
@@ -7,6 +8,8 @@ bool Stone::Init()
 
     SetName("ストーン");
     SetTranslate({0.0f, 10.0f, 0.0f});
+    //Collision
+    AddComponent<ComponentCollisionCapsule>()->SetRadius(4.0f)->SetHeight(6.0f)->UseGravity();
 
     return true;
 }
