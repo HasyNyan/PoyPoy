@@ -1,15 +1,15 @@
 ﻿#include "Object.h";
 #include <System/Component/ComponentModel.h>
-#include <System/Component/ComponentCollisionCapsule.h>
+#include <System/Component/ComponentCollisionSphere.h>
 namespace Game01 {
 bool Stone::Init()
 {
     __super::Init();
 
-    SetName("ストーン");
+    SetName(u8"ストーン");
     SetTranslate({0.0f, 10.0f, 0.0f});
     //Collision
-    AddComponent<ComponentCollisionCapsule>()->SetRadius(4.0f)->SetHeight(6.0f)->UseGravity();
+    AddComponent<ComponentCollisionSphere>()->SetRadius(3.0f)->UseGravity();
 
     return true;
 }
