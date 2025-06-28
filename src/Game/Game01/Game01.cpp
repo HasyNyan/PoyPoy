@@ -5,12 +5,15 @@
 #include "Enemy.h"
 #include "PlayerUI.h"
 
+#include "Object.h"
 namespace Game01 {
 bool Game01::Init()
 {
     // 最初に1回動作する
     // ただし trueを返さなければ Initに何回も来る仕様。
 
+    //物体オブジェクト
+    Scene::Object::Create<Stone>();
     //プレイヤーオブジェクト
     Scene::Object::Create<Player>();
     //////エネミーオブジェクト
@@ -20,15 +23,8 @@ bool Game01::Init()
     ////グラウンドオブジェクト
     Scene::Object::Create<Ground>();
 
-    Scene::Object::Create<PlayerUI>();
-
     return true;
 }
-void Game01::Draw()
-{
-    Super::Draw();
-}
-void Game01::Exit()
-{
+
 }
 }    // namespace Game01
