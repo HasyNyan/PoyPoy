@@ -23,8 +23,8 @@ bool Game01::Init()
     ////グラウンドオブジェクト
     Scene::Object::Create<Ground>();
 
-    return true;
-}
+    Scene::Object::Create<PlayerUI>();
 
+    return true;
 }
 }    // namespace Game01
