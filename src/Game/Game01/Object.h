@@ -7,7 +7,6 @@ class Stone : public Object
 {
 public:
     BP_OBJECT_DECL(Stone, u8"Game01 の Stone");
-
     //物体の初期化処理
     //初期化処理が行われたかどうか
     bool Init() override;
