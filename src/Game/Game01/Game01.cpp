@@ -3,6 +3,8 @@
 #include "Camera.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "PlayerUI.h"
+
 namespace Game01 {
 bool Game01::Init()
 {
@@ -17,7 +19,16 @@ bool Game01::Init()
     Scene::Object::Create<Camera>();    //CreateObject;
     ////グラウンドオブジェクト
     Scene::Object::Create<Ground>();
-    //
+
+    Scene::Object::Create<PlayerUI>();
+
     return true;
+}
+void Game01::Draw()
+{
+    Super::Draw();
+}
+void Game01::Exit()
+{
 }
 }    // namespace Game01
