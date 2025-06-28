@@ -17,6 +17,8 @@ public:
     //! @return 初期化済み
     bool Init() override;
     void Update() override {}
+    void Draw() override;
+    void Exit() override;
 
 private:
 };
