@@ -13,11 +13,12 @@ bool Player::Init()
     AddComponent<ComponentCollisionCapsule>()->SetRadius(4.0f)->SetHeight(6.0f)->UseGravity();
 
     //!!
-    AddComponent<ComponentModel>("data/model/player.mv1")
-        ->SetScaleAxisXYZ(10.0f)
-        ->SetTranslate({0.0f, 0.0f, 0.0f})
-        ->SetRotationAxisXYZ({0.0f, 0.0f, 0.0f})
-        ->UseShader(false);
+    auto model = AddComponent<ComponentModel>("data/model/player2/Player2.mv1");
+    model->SetAnimation({});
+    model->SetScaleAxisXYZ({0.08f, 0.08f, 0.08f});
+    model->SetTranslate({0.0f, 0.0f, 0.0f});
+    model->SetRotationAxisXYZ({0.0f, 0.0f, 0.0f});
+    model->UseShader(TRUE);
 
     //move
     AddComponent<ComponentObjectController>()
@@ -154,7 +155,7 @@ void Player::Draw()
     //色
     int cColor = GetColor(0, 255, 255);
     //描画
-    DrawSphere3D(cast(cPos), 3.0f, 16, cColor, cColor, TRUE);
+    // DrawSphere3D(cast(cPos), 3.0f, 16, cColor, cColor, TRUE);
 }
 
 void Player::OnHit(const ComponentCollision::HitInfo& hit_info)
