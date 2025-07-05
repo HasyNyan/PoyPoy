@@ -4,7 +4,6 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "PlayerUI.h"
-
 #include "Object.h"
 namespace Game01 {
 bool Game01::Init()
