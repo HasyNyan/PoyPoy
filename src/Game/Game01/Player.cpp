@@ -1,4 +1,5 @@
 ﻿#include "Player.h"
+#include "Object.h"
 namespace Game01 {
 
 bool Player::Init()
@@ -34,15 +35,92 @@ void Player::Update()
     // 毎フレーム動作する
     Super::Update();
 
-    //!!JUMP
-    if(IsKeyOn(KEY_INPUT_SPACE) && !is_jump_) {
-        is_jump_ = true;
+    //ジャンプ
+    if(IsKey(KEY_INPUT_SPACE) && !isJump_) {
+        isJump_ = true;
     }
 
-    if(is_jump_) {
-        jump_power_ = 0.5f;
+    if(isJump_) {
+        jumpPower_ = 0.5f;
+        AddTranslate({0, jumpPower_, 0});
+    }
 
-        AddTranslate({0, jump_power_, 0});
+    //障害物を持ち上げる
+    if(IsKeyOn(KEY_INPUT_X) && !takeMode_) {
+        //一番近いストーンを探す
+        float                   minDist      = 1000.0f;
+        std::shared_ptr<Object> nearestStone = nullptr;
+
+        //全部のストーン
+        auto   stoneList = Scene::GetObjectsPtr<Stone>();
+        float3 playerPos = GetTranslate();
+        float3 wayPos    = {0.0f, 0.0f, 0.0f};
+
+        //全部のストーンとプレーヤーの距離を取る
+        for(auto& stone : stoneList) {
+            float3 stonePos = stone->GetTranslate();
+            float3 dir      = stonePos - playerPos;
+            float  dist     = sqrtf(dir.x * dir.x + dir.y * dir.y + dir.z * dir.z);
+
+            //プレーヤーの近い一つと持ち上げる範囲内
+            if(dist < 10.0f && dist < minDist) {
+                minDist      = dist;
+                nearestStone = stone;
+                wayPos       = stonePos;
+            }
+        }
+        //takenStone_に入れる
+        if(nearestStone) {
+            takeMode_   = true;
+            takenStone_ = nearestStone;
+
+            //!!プレイヤーの向きを変わりたい
+            GetComponent<ComponentModel>()->SetRotationToPosition(wayPos);
+        }
+    }
+
+    if(takeMode_ && takenStone_) {
+        //障害物の重力を消す
+        takenStone_->GetComponent<ComponentCollisionSphere>()->UseGravity(false);
+
+        float3 stonePos  = takenStone_->GetTranslate();
+        float3 playerPos = GetTranslate();
+
+        //プレイヤーと障害物のベクトル
+        float3 moveVec = playerPos - stonePos;
+        //プレイヤーの上
+        moveVec.y += 15.0f;
+        //移動量を20％にする
+        moveVec *= 0.2f;
+        //移動させる
+        takenStone_->AddTranslate(moveVec);
+    }
+
+    //障害物を投げる
+    if(IsKeyOn(KEY_INPUT_C) && takeMode_ && takenStone_) {
+        //投げるモードオン
+        throwMode_ = true;
+        takeMode_  = false;
+    }
+
+    if(throwMode_ && takenStone_) {
+        auto stone = std::dynamic_pointer_cast<Stone>(takenStone_);
+        if(stone) {
+            //プレーヤーの方向の計算
+            auto model = GetComponent<ComponentModel>();
+            auto dir   = model->GetWorldMatrix().axisZ();
+            dir.y      = 0.2f;
+
+            ////ストーンに方向を渡す
+            stone->SetDirection(dir);
+            stone->SetIsFlying(true);
+
+            //重力を元に戻す
+            takenStone_->GetComponent<ComponentCollisionSphere>()->UseGravity(true);
+            //投げるモードをオフ
+            throwMode_  = false;
+            takenStone_ = nullptr;
+        }
     }
 }
 
@@ -85,8 +163,8 @@ void Player::OnHit(const ComponentCollision::HitInfo& hit_info)
 
     auto hitName = hit_info.hit_collision_->GetOwner()->GetName();
     if(hitName == "Ground") {
-        is_jump_    = false;
-        jump_power_ = 0.0f;
+        isJump_    = false;
+        jumpPower_ = 0.0f;
     }
 }
 

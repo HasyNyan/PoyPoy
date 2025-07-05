@@ -315,6 +315,8 @@ public:
 
     bool IsUseGravity() { return use_gravity_; }
 
+    void SetGravity(float3 x) { gravity_ = x; }
+
     void [[deprecated("Overlap()は古い命名です。SetOverlapCollisionGroup()を使用してください")]] Overlap(u32 bit) { collision_overlap_ = bit; }
 
     bool IsOverlap(CollisionGroup bit) { return (collision_overlap_ & (u32)bit) != 0 ? true : false; }
