@@ -166,7 +166,7 @@ public:
         if(!up_change)
             position.y = GetMatrix().translate().y;
 
-        float3 vec = position - GetMatrix().translate();
+        float3 vec = GetMatrix().translate() - position;
         return SetRotationToVectorOnParent(vec, up, up_change);
     }
 
