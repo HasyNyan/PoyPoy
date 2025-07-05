@@ -3,7 +3,7 @@
 namespace Game01 {
 void MasterData::RoadMasterData()
 {
-    std::ifstream file("data.csv");    // 読み込むCSVファイル名
+    std::ifstream file("data/MasterData/ObstacleData.csv");    // 読み込むCSVファイル名
     std::string   line;
 
     if(!file.is_open()) {    //ファイルが開けたかを確認
@@ -15,7 +15,7 @@ void MasterData::RoadMasterData()
         std::string       cell;
 
         while(std::getline(ss, cell, ',')) {
-            std::cout << "セルの内容: " << cell << std::endl;
+            //  std::cout << "セルの内容: " << cell << std::endl;
         }
     }
 
