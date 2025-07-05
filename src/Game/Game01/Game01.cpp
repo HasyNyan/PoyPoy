@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "PlayerUI.h"
+#include "Timer.h"
 
 #include "Object.h"
 namespace Game01 {
@@ -24,6 +25,9 @@ bool Game01::Init()
     Scene::Object::Create<Ground>();
 
     Scene::Object::Create<PlayerUI>();
+
+    //タイマーオブジェクト
+    Scene::Object::Create<Timer>();
 
     return true;
 }
