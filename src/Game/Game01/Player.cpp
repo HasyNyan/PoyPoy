@@ -20,7 +20,7 @@ bool Player::Init()
     });
     model->SetScaleAxisXYZ({0.08f, 0.08f, 0.08f});
     model->SetTranslate({0.0f, 0.0f, 0.0f});
-    model->SetRotationAxisXYZ({0.0f, -180.0f, 0.0f});
+    model->SetRotationAxisXYZ({0.0f, 0.0f, 0.0f});
     model->UseShader(TRUE);
 
     //move

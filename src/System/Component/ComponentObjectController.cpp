@@ -41,7 +41,7 @@ void ComponentObjectController::Update()
 
         // モデルを移動の方向に向けます
         if(auto mdl = owner->GetComponent<ComponentModel>()) {
-            mdl->SetRotationToVectorWithLimit(-dir, rot_speed_);
+            mdl->SetRotationToVectorWithLimit(dir, rot_speed_);
             mdl->PlayAnimationNoSame("walk", true);
         }
     }
