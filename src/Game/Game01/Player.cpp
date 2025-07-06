@@ -10,7 +10,7 @@ bool Player::Init()
     SetTranslate({0.0f, 5.0f, 0.0f});
 
     //Collision
-    AddComponent<ComponentCollisionCapsule>()->SetRadius(4.0f)->SetHeight(6.0f)->UseGravity();
+    AddComponent<ComponentCollisionCapsule>()->SetRadius(3.0f)->SetHeight(14.0f)->UseGravity();
 
     //!!
     auto model = AddComponent<ComponentModel>("data/model/player2/Player2.mv1");
