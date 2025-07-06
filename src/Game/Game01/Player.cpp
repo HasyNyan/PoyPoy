@@ -10,14 +10,18 @@ bool Player::Init()
     SetTranslate({0.0f, 5.0f, 0.0f});
 
     //Collision
-    AddComponent<ComponentCollisionCapsule>()->SetRadius(4.0f)->SetHeight(6.0f)->UseGravity();
+    AddComponent<ComponentCollisionCapsule>()->SetRadius(3.0f)->SetHeight(14.0f)->UseGravity();
 
     //!!
-    AddComponent<ComponentModel>("data/model/player.mv1")
-        ->SetScaleAxisXYZ(10.0f)
-        ->SetTranslate({0.0f, 0.0f, 0.0f})
-        ->SetRotationAxisXYZ({0.0f, 0.0f, 0.0f})
-        ->UseShader(false);
+    auto model = AddComponent<ComponentModel>("data/model/player2/Player2.mv1");
+    model->SetAnimation({
+        {"idle",       "data/Anims/Idle/Idle.mv1", 0, 1.0f},
+        {"walk", "data/Anims/Walking/Walking.mv1", 0, 1.0f},
+    });
+    model->SetScaleAxisXYZ({0.08f, 0.08f, 0.08f});
+    model->SetTranslate({0.0f, 0.0f, 0.0f});
+    model->SetRotationAxisXYZ({0.0f, 0.0f, 0.0f});
+    model->UseShader(TRUE);
 
     //move
     AddComponent<ComponentObjectController>()
@@ -148,7 +152,7 @@ void Player::Draw()
     //auto dir = -model->GetTranslate();
 
     //プレイヤーと離れる距離
-    float offset = 1.0f;
+    float offset = 6.0f;
     //位置
     float3 cPos = float3(pos.x + dir.x * offset, pos.y + dir.y * offset, pos.z + dir.z * offset);
     //色
