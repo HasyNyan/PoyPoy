@@ -5,8 +5,8 @@
 #include "Enemy.h"
 #include "PlayerUI.h"
 #include "Timer.h"
-
 #include "Object.h"
+#include "Ufo.h"
 namespace Game01 {
 bool Game01::Init()
 {
@@ -26,9 +26,9 @@ bool Game01::Init()
 
     Scene::Object::Create<PlayerUI>();
 
+    Scene::Object::Create<Ufo>();
     //タイマーオブジェクト
     Scene::Object::Create<Timer>();
-
     return true;
 }
 }    // namespace Game01
