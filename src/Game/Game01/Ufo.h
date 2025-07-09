@@ -18,6 +18,15 @@ public:
 
 private:
     // 必要であれば変数をここに追加する
+    enum playMode
+    {
+        MOVE,      //移動
+        CREATE,    //生成
+    };
+    // 必要であれば変数をここに追加する
+    float3 targetPos_;
+    int    playMode_;
+    int    stayTime_ = 0;    //生成後何秒間かその場に固定する用の変数
 };
 }    // namespace Game01
 
