@@ -2,7 +2,7 @@
 #include "Ground.h"
 #include "Camera.h"
 #include "Player.h"
-#include "Enemy.h"
+#include "Cpu.h"
 #include "PlayerUI.h"
 #include "Timer.h"
 #include "Object.h"
@@ -18,7 +18,7 @@ bool Game01::Init()
     //プレイヤーオブジェクト
     Scene::Object::Create<Player>();
     //////エネミーオブジェクト
-    ////Scene::Object::Create<Enemy>();
+    Scene::Object::Create<Cpu>();
     //カメラオブジェクト
     Scene::Object::Create<Camera>();    //CreateObject;
     ////グラウンドオブジェクト
