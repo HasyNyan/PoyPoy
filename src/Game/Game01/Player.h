@@ -22,11 +22,11 @@ public:
     void OnHit(const ComponentCollision::HitInfo& hit_info) override;
 
 private:
-    float                   jumpPower_  = 0.5f;
-    bool                    isJump_     = false;
-    bool                    takeMode_   = false;
-    bool                    throwMode_  = false;
-    std::shared_ptr<Object> takenStone_ = nullptr;
+    float                   jumpPower_ = 0.5f;
+    bool                    isJump_    = false;
+    bool                    takeMode_  = false;
+    bool                    throwMode_ = false;
+    std::shared_ptr<Object> takenObj_  = nullptr;
 };
 
 }    // namespace Game01
