@@ -8,6 +8,7 @@
 #include "Object.h"
 #include "Ufo.h"
 #include "BoxObject.h"
+#include "Wood.h"
 namespace Game01 {
 bool Game01::Init()
 {
@@ -32,6 +33,9 @@ bool Game01::Init()
     Scene::Object::Create<Timer>();
 
     Scene::Object::Create<Box>();
+
+    //丸太オブジェクト
+    Scene::Object::Create<Wood>();
 
     return true;
 }
