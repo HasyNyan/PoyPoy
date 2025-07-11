@@ -14,7 +14,9 @@ bool Cpu::Init()
     AddComponent<ComponentModel>("data/model/npc.mv1")->SetScaleAxisXYZ(10.0f)->UseShader(false);
 
     //Collision
-    AddComponent<ComponentCollisionCapsule>()->SetRadius(4.0f)->SetHeight(8.0f)->UseGravity();
+    auto col = AddComponent<ComponentCollisionCapsule>();
+    col->SetRadius(4.0f)->SetHeight(8.0f)->UseGravity();
+    col->SetGravity({0.0f, -2.0f, 0.0f});
 
     return true;
 }
@@ -24,6 +26,10 @@ void Cpu::Update()
 {
     // 毎フレーム動作する
     Super::Update();
+    //投げるとき
+    if(isFlying_) {
+        AddTranslate(direction_ * speed_);
+    }
 }
 
 void Cpu::Draw()

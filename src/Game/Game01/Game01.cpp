@@ -21,7 +21,7 @@ bool Game01::Init()
     //////エネミーオブジェクト
     Scene::Object::Create<Cpu>();
     //カメラオブジェクト
-    Scene::Object::Create<Camera>();    //CreateObject;
+    Scene::Object::Create<Camera>();
     ////グラウンドオブジェクト
     Scene::Object::Create<Ground>();
 

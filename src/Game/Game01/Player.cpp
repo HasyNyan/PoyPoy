@@ -1,5 +1,6 @@
 ﻿#include "Player.h"
 #include "Object.h"
+#include "Cpu.h"
 namespace Game01 {
 
 bool Player::Init()
@@ -52,11 +53,16 @@ void Player::Update()
     //障害物を持ち上げる
     if(IsKeyOn(KEY_INPUT_X) && !takeMode_) {
         //一番近いストーンを探す
-        float                   minDist      = 1000.0f;
-        std::shared_ptr<Object> nearestStone = nullptr;
+        float                   minDist    = 1000.0f;
+        std::shared_ptr<Object> nearestObj = nullptr;
 
         //全部のストーン
-        auto   stoneList = Scene::GetObjectsPtr<Stone>();
+        auto stoneList = Scene::GetObjectsPtr<Stone>();
+
+        //全部のCpu
+        auto cpuList = Scene::GetObjectsPtr<Cpu>();
+
+        //プレイヤーの位置
         float3 playerPos = GetTranslate();
         float3 wayPos    = {0.0f, 0.0f, 0.0f};
 
@@ -68,26 +74,40 @@ void Player::Update()
 
             //プレーヤーの近い一つと持ち上げる範囲内
             if(dist < 10.0f && dist < minDist) {
-                minDist      = dist;
-                nearestStone = stone;
-                wayPos       = stonePos;
+                minDist    = dist;
+                nearestObj = stone;
+                wayPos     = stonePos;
             }
         }
+
+        //全部のCPUとプレイヤーの距離を取る
+        for(auto& cpu : cpuList) {
+            float3 cpuPos = cpu->GetTranslate();
+            float3 dir    = cpuPos - playerPos;
+            float  dist   = sqrtf(dir.x * dir.x + dir.y * dir.y + dir.z * dir.z);
+
+            if(dist < 10.0f && dist < minDist) {
+                minDist    = dist;
+                nearestObj = cpu;
+                wayPos     = cpuPos;
+            }
+        }
+
         //takenStone_に入れる
-        if(nearestStone) {
-            takeMode_   = true;
-            takenStone_ = nearestStone;
+        if(nearestObj) {
+            takeMode_ = true;
+            takenObj_ = nearestObj;
 
             //!!プレイヤーの向きを変わりたい
             GetComponent<ComponentModel>()->SetRotationToPosition(wayPos);
         }
     }
 
-    if(takeMode_ && takenStone_) {
+    if(takeMode_ && takenObj_) {
         //障害物の重力を消す
-        takenStone_->GetComponent<ComponentCollisionSphere>()->UseGravity(false);
+        takenObj_->GetComponent<ComponentCollision>()->UseGravity(false);
 
-        float3 stonePos  = takenStone_->GetTranslate();
+        float3 stonePos  = takenObj_->GetTranslate();
         float3 playerPos = GetTranslate();
 
         //プレイヤーと障害物のベクトル
@@ -97,34 +117,41 @@ void Player::Update()
         //移動量を20％にする
         moveVec *= 0.2f;
         //移動させる
-        takenStone_->AddTranslate(moveVec);
+        takenObj_->AddTranslate(moveVec);
     }
 
     //障害物を投げる
-    if(IsKeyOn(KEY_INPUT_C) && takeMode_ && takenStone_) {
+    if(IsKeyOn(KEY_INPUT_C) && takeMode_ && takenObj_) {
         //投げるモードオン
         throwMode_ = true;
         takeMode_  = false;
     }
 
-    if(throwMode_ && takenStone_) {
-        auto stone = std::dynamic_pointer_cast<Stone>(takenStone_);
-        if(stone) {
-            //プレーヤーの方向の計算
-            auto model = GetComponent<ComponentModel>();
-            auto dir   = model->GetWorldMatrix().axisZ();
-            dir.y      = 0.2f;
+    if(throwMode_ && takenObj_) {
+        auto stone = std::dynamic_pointer_cast<Stone>(takenObj_);
+        //プレーヤーの方向の計算
+        auto model = GetComponent<ComponentModel>();
+        auto dir   = model->GetWorldMatrix().axisZ();
+        dir.y      = 0.2f;
 
-            ////ストーンに方向を渡す
-            stone->SetDirection(dir);
-            stone->SetIsFlying(true);
-
-            //重力を元に戻す
-            takenStone_->GetComponent<ComponentCollisionSphere>()->UseGravity(true);
-            //投げるモードをオフ
-            throwMode_  = false;
-            takenStone_ = nullptr;
+        //投げる方向を渡す
+        //ストーンの場合
+        if(auto obj = std::dynamic_pointer_cast<Stone>(takenObj_)) {
+            obj->SetDirection(dir);
+            obj->SetIsFlying(true);
         }
+
+        //CPUの場合
+        else if(auto obj = std::dynamic_pointer_cast<Cpu>(takenObj_)) {
+            obj->SetDirection(dir);
+            obj->SetIsFlying(true);
+        }
+
+        //重力を元に戻す
+        takenObj_->GetComponent<ComponentCollision>()->UseGravity(true);
+        //投げるモードをオフ
+        throwMode_ = false;
+        takenObj_  = nullptr;
     }
 }
 
