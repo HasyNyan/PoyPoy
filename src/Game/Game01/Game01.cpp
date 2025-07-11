@@ -7,6 +7,7 @@
 #include "Timer.h"
 #include "Object.h"
 #include "Ufo.h"
+#include "BoxObject.h"
 namespace Game01 {
 bool Game01::Init()
 {
@@ -29,6 +30,9 @@ bool Game01::Init()
     Scene::Object::Create<Ufo>();
     //タイマーオブジェクト
     Scene::Object::Create<Timer>();
+
+    Scene::Object::Create<Box>();
+
     return true;
 }
 }    // namespace Game01
