@@ -158,34 +158,6 @@ void Player::Update()
 void Player::Draw()
 {
     Super::Draw();
-
-    //プレイヤー
-    //位置
-    auto pos = cast(GetTranslate());
-    //円の色
-    auto color = GetColor(255, 255, 255);
-    //方向
-    auto rot = cast(GetRotationAxisXYZ());
-    //描画
-    //DrawSphere3D(pos, r_, 20, color, color, TRUE);
-
-    //方向をわかる円
-    auto model = GetComponent<ComponentModel>();
-    if(!model)
-        return;
-    //方向
-    auto dir = model->GetWorldMatrix().axisZ();
-
-    //auto dir = -model->GetTranslate();
-
-    //プレイヤーと離れる距離
-    float offset = 6.0f;
-    //位置
-    float3 cPos = float3(pos.x + dir.x * offset, pos.y + dir.y * offset, pos.z + dir.z * offset);
-    //色
-    int cColor = GetColor(0, 255, 255);
-    //描画
-    DrawSphere3D(cast(cPos), 3.0f, 16, cColor, cColor, TRUE);
 }
 
 void Player::OnHit(const ComponentCollision::HitInfo& hit_info)
