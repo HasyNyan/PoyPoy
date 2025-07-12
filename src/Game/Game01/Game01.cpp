@@ -2,11 +2,12 @@
 #include "Ground.h"
 #include "Camera.h"
 #include "Player.h"
-#include "Enemy.h"
+#include "Cpu.h"
 #include "PlayerUI.h"
 #include "Timer.h"
 #include "Object.h"
 #include "Ufo.h"
+#include "BoxObject.h"
 namespace Game01 {
 bool Game01::Init()
 {
@@ -18,9 +19,9 @@ bool Game01::Init()
     //プレイヤーオブジェクト
     Scene::Object::Create<Player>();
     //////エネミーオブジェクト
-    ////Scene::Object::Create<Enemy>();
+    Scene::Object::Create<Cpu>();
     //カメラオブジェクト
-    Scene::Object::Create<Camera>();    //CreateObject;
+    Scene::Object::Create<Camera>();
     ////グラウンドオブジェクト
     Scene::Object::Create<Ground>();
 
@@ -29,6 +30,9 @@ bool Game01::Init()
     Scene::Object::Create<Ufo>();
     //タイマーオブジェクト
     Scene::Object::Create<Timer>();
+
+    Scene::Object::Create<Box>();
+
     return true;
 }
 }    // namespace Game01
