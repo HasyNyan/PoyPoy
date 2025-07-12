@@ -10,7 +10,7 @@ bool Camera::Init()
     //auto camera = Scene::Object::Create<Object>();    //CreateObject;
     SetName(u8"カメラ");
     auto cam = AddComponent<ComponentCamera>();
-    cam->SetPositionAndTarget({0.0f, 20.0f, -50.0f}, {0.0f, 10.0f, 0.0f});
+    cam->SetPositionAndTarget({0.0f, 60.0f, -50.0f}, {0.0f, 10.0f, 0.0f});
 
     auto arm = AddComponent<ComponentSpringArm>();
     arm->SetSpringArmObject("Player");
