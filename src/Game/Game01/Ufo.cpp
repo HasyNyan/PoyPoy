@@ -12,18 +12,20 @@ void Ufo::Update()
 {
     Super::Update();
 
-    // auto obj       = Scene::Object::Create<Ufo>();
-    // auto transform = obj->GetComponent<ComponentTransform>();
-    // float3 rot = {0, 1, 0};
-    // transform->AddRotationAxisXYZ(rot);
+    //auto obj       = Scene::Object::Create<Ufo>();
+    auto   transform = GetComponent<ComponentTransform>();
+    float3 rot       = {0, 1, 0};
+    transform->AddRotationAxisXYZ(rot);
 
     float3 pos = GetTranslate();
     if(playMode_ == CREATE)    //生成器の状態がオブジェクト生成モードだったら
     {
         float3 dir = targetPos_ - pos;    //生成器から目的地までのベクトルを作成
-        //transform -> AddTranslate(dir, true);                 //作ったベクトルを足す
-        Scene::Object::Create<Stone>();    //オブジェクト生成
-        playMode_ = MOVE;                  //移動モードに
+        dir        = normalize(dir) * 5;
+
+        transform->AddTranslate(dir);    //作ったベクトルを足す
+        //Scene::Object::Create<Stone>();    //オブジェクト生成
+        playMode_ = MOVE;    //移動モードに
     }
     if(playMode_ == MOVE)    //生成器の状態がオブジェクト移動モードだったら
     {
