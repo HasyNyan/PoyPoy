@@ -6,13 +6,13 @@ bool Ufo::Init()
     __super::Init();
     SetName("Ufo");
     SetTranslate({0.0f, 10.0f, 0.0f});
+    playMode_ = MOVE;
     return true;
 }
 void Ufo::Update()
 {
     Super::Update();
 
-    //auto obj       = Scene::Object::Create<Ufo>();
     auto   transform = GetComponent<ComponentTransform>();
     float3 rot       = {0, 1, 0};
     transform->AddRotationAxisXYZ(rot);
@@ -21,17 +21,18 @@ void Ufo::Update()
     if(playMode_ == CREATE)    //生成器の状態がオブジェクト生成モードだったら
     {
         float3 dir = targetPos_ - pos;    //生成器から目的地までのベクトルを作成
-        dir        = normalize(dir) * 5;
-
+        dir        = normalize(dir) * 0.2;
         transform->AddTranslate(dir);    //作ったベクトルを足す
-        //Scene::Object::Create<Stone>();    //オブジェクト生成
-        playMode_ = MOVE;    //移動モードに
+        //if(pos >= targetPos_) {
+        //    Scene::Object::Create<Stone>();    //オブジェクト生成
+        //    playMode_ = MOVE;    //移動モードに
+        //}
     }
     if(playMode_ == MOVE)    //生成器の状態がオブジェクト移動モードだったら
     {
         stayTime_++;
-        if(stayTime_ >= 600) {
-            targetPos_ = {GetRand(50.0f) + 20.0f, 0.0f, GetRand(50.0f) + 20.0f};    //目的地をランダムに変更
+        if(stayTime_ >= 180) {
+            targetPos_ = {(float)GetRand(50.0f) + 20.0f, 0.0f, (float)GetRand(50.0f) + 20.0f};    //目的地をランダムに変更
             stayTime_  = 0;
             playMode_  = CREATE;
         }
