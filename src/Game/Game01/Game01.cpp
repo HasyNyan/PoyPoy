@@ -8,6 +8,7 @@
 #include "Object.h"
 #include "Ufo.h"
 #include "BoxObject.h"
+#include "RoketObject.h"
 namespace Game01 {
 bool Game01::Init()
 {
@@ -32,6 +33,8 @@ bool Game01::Init()
     Scene::Object::Create<Timer>();
 
     Scene::Object::Create<Box>();
+
+    Scene::Object::Create<Roket>();
 
     return true;
 }
